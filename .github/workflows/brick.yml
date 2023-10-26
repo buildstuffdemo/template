@@ -1,0 +1,40 @@
+name: brick
+
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  ai:
+    runs-on: ubuntu-latest
+    env:
+      PAYLOAD: ${{ toJson(github) }}
+    steps:
+      - name: comment
+        run: echo "PROMPT=${{ github.event.comment.body }}" >> "$GITHUB_ENV"
+        if: github.event.action == 'created' && github.event.comment.body != ''
+      
+      - name: title
+        run: echo "PROMPT=${TITLE} ${{ github.event.issue.body }}" >> "$GITHUB_ENV"
+        if: github.event.action == 'opened' && github.event.comment.body == ''
+        env:
+          TITLE: ${{ github.event.issue.title }}      
+
+      - uses: builtwithai/askgpt@main
+        id: generate-response
+        env:
+          KEY: ${{ secrets.KEY }}
+          ENDPOINT: ${{ secrets.ENDPOINT }}
+          MODEL: ${{ secrets.MODEL }}
+        with:
+          prompt: '{"prompt": ["${{ env.PROMPT }}, respond in markdown format: "]}'
+      - env:
+          RESPONSE: ${{ steps.generate-response.outputs.response }}
+        run: echo ok
+
+      - name: Create comment
+        uses: peter-evans/create-or-update-comment@v1
+        with:
+          issue-number: ${{ github.event.issue.number }}
+          body: |
+            ${{ steps.generate-response.outputs.response }}
