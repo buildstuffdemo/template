@@ -12,13 +12,19 @@ jobs:
     env:
       PAYLOAD: ${{ toJson(github) }}
     steps:
+
+      - name: Set issue body as output
+        id: issue-body
+        run: |
+          echo "::set-output name=body::${{ github.event.issue.body }}"
+
+      - name: Replace newline characters
+        id: replace-newlines
+        run: |
+          echo "::set-output name=body::$(echo "${{ steps.issue-body.outputs.body }}" | tr '\n' ' ')"
+
       - name: comment
-        run: echo "PROMPT=${{ github.event.comment.body }}" >> "$GITHUB_ENV"
-        if: github.event.action == 'created' && github.event.comment.body != ''
-      
-      - name: title
-        run: echo "PROMPT=${TITLE} ${{ github.event.issue.body }}" >> "$GITHUB_ENV"
-        if: github.event.action == 'opened' && github.event.comment.body == ''
+        run: echo "PROMPT=${TITLE} ${{ steps.replace-newlines.outputs.body }}" >> "$GITHUB_ENV"
         env:
           TITLE: ${{ github.event.issue.title }}      
 
