@@ -15,7 +15,7 @@
 ## 📔 Examples to use in Issue 🗒️
 
 
-### Analogy game
+### Analogy game :game_die:
 ```
 like space needle to seattle
 x is to [Write the Name of Your City]
@@ -24,7 +24,7 @@ what is x & y?
 ```
 
 
-### 6️⃣ Degrees of seperation:
+### 6️⃣ Degrees of Seperation:
 ```
 Connection between the following through a chain of 6 or fewer relationships or collaborations:
 
@@ -34,3 +34,8 @@ Bill Gates
 Person 2
 Steve Jobs
 ```
+
+
+## 🚀 Want More? 🤔
+
+DiY Advanced Track @ https://github.com/buildstuffdemo/advanced 
