@@ -10,3 +10,27 @@
 
 
 ![createIssue](https://github.com/buildstuffdemo/template/assets/10250297/823b6bb7-b84b-45b8-bcd0-121544b9c325)
+
+
+## 📔 Examples to use in Issue 🗒️
+
+
+### Analogy game
+```
+like space needle to seattle
+x is to [Write the Name of Your City]
+y is to Vilnius
+what is x & y?
+```
+
+
+### 6️⃣ Degrees of seperation:
+```
+Connection between the following through a chain of 6 or fewer relationships or collaborations:
+
+Person 1
+Bill Gates
+
+Person 2
+Steve Jobs
+```
