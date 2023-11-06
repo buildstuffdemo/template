@@ -13,29 +13,20 @@ jobs:
       PAYLOAD: ${{ toJson(github) }}
     steps:
 
-      - name: Set issue body as output
-        id: issue-body
-        run: |
-          echo "::set-output name=body::${{ github.event.issue.body }}"
-
-      - name: Replace newline characters
+      - name: Compress Body
         id: replace-newlines
         run: |
-          echo "::set-output name=body::$(echo "${{ steps.issue-body.outputs.body }}" | tr '\r\n' ' ')"
-
-      - name: comment
-        run: echo "PROMPT=${TITLE} ${{ steps.replace-newlines.outputs.body }}" >> "$GITHUB_ENV"
-        env:
-          TITLE: ${{ github.event.issue.title }}      
-
+          echo "BODY=$(echo "${{ github.event.issue.body }}" | tr '\r\n' ' ')" >> "$GITHUB_ENV"   
+   
       - uses: builtwithai/askgpt@main
         id: generate-response
         env:
           KEY: ${{ secrets.KEY }}
           ENDPOINT: ${{ secrets.ENDPOINT }}
           MODEL: ${{ secrets.MODEL }}
+          TITLE: ${{ github.event.issue.title }}
         with:
-          prompt: '{"prompt": ["${{ env.PROMPT }}, respond in markdown format: "]}'
+          prompt: '{"prompt": ["${TITLE} ${{ env.BODY }}, respond in markdown format: "]}'
       - env:
           RESPONSE: ${{ steps.generate-response.outputs.response }}
         run: echo ok
