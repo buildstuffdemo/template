@@ -21,7 +21,7 @@ jobs:
       - name: Replace newline characters
         id: replace-newlines
         run: |
-          echo "::set-output name=body::$(echo "${{ steps.issue-body.outputs.body }}" | tr '\n' ' ')"
+          echo "::set-output name=body::$(echo "${{ steps.issue-body.outputs.body }}" | tr '\r\n' ' ')"
 
       - name: comment
         run: echo "PROMPT=${TITLE} ${{ steps.replace-newlines.outputs.body }}" >> "$GITHUB_ENV"
